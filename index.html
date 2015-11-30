@@ -19,15 +19,18 @@
           <ul class="todo-list">
 
             <!-- mark all todos complete -->
-            <button class="down-arrow">&caron;</button>
-            <!-- ADD -->
-            <form ng-submit="addTodo()" class="form-horizontal">
-              <input class="new-todo" type="text" ng-model="todo" placeholder="What needs to be done?" required="string"/>
-            </form>
+            <div class="top-shadow">
+              <button class="down-arrow">&caron;</button>
+              <!-- ADD -->
+              <form ng-submit="addTodo()" class="form-horizontal">
+                <input class="new-todo" type="text" ng-model="todo" placeholder="What needs to be done?" required="string"/>
+              </form>
+            </div>
 
             <!-- EDIT & MARK COMPLETE -->
             <li class="todo-li" ng-repeat="todo in todos" ng-dblclick="editTodo(todo)">
-              <input type="checkbox" value="none" class="round-checkbox" name="check" ng-model="todo.is_completed" ng-hide="todo.editing"/>
+              <input type="checkbox" class="hidden-checkbox" value="none" ng-model="todo.is_completed" ng-hide="todo.editing"/>
+              <svg class="round-checkbox"></svg>
               <span class="is_completed-{{todo.is_completed}} todo-task" ng-hide="todo.editing">{{todo.title}}</span>
 
               <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
@@ -40,11 +43,17 @@
 
           <div class="sort-todos">
             <!-- REMOVE COMPLETED  -->
-              <span>{{getTotalTodos()}} items left</span>
-              <button class="all-todos" ng-click="loadTodos()">All</button>
-              <button class="active-todos">Active</button>
-              <button class="completed-todos">Completed</button>
+              <span class="total-todos">{{getTotalTodos()}} items left</span>
+              <span class="sort-nav">
+                <button class="all-todos" ng-click="loadTodos()">All</button>
+                <button class="active-todos">Active</button>
+                <button class="completed-todos">Completed</button>
+              </span>
+
+
               <button class="clear-completed" ng-click="clearCompleted()" ng-hide="todo.is_completed-false">Clear completed</button>
+
+
           </div>
 
         </div>
