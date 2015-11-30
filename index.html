@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="todoApp">
+  <head lang="en">
+    <meta charset="UTF-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script type="text/javascript" src="app/js/controllers/main.js"></script>
+    <link rel="stylesheet" href="app/css/normalize.css"></script>
+    <link rel="stylesheet" href="app/css/todo.css"></script>
+    <title>todos</title>
+
+  </head>
+  <body>
+
+      <div ng-controller="TodoController">
+        <h1 class="title">todos</h1>
+
+        <div class="wrapper">
+          <ul class="todo-list">
+
+            <!-- mark all todos complete -->
+            <button class="down-arrow">&caron;</button>
+            <!-- ADD -->
+            <form ng-submit="addTodo()" class="form-horizontal">
+              <input class="new-todo" type="text" ng-model="todo" placeholder="What needs to be done?" required="string"/>
+            </form>
+
+            <!-- EDIT & MARK COMPLETE -->
+            <li class="todo-li" ng-repeat="todo in todos" ng-dblclick="editTodo(todo)">
+              <input type="checkbox" value="none" class="round-checkbox" name="check" ng-model="todo.is_completed" ng-hide="todo.editing"/>
+              <span class="is_completed-{{todo.is_completed}} todo-task" ng-hide="todo.editing">{{todo.title}}</span>
+
+              <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
+                <input class="" type="text" ng-model="todo.title" required="string"/>
+                <button class="">Save</button>
+              </form>
+            </li>
+
+          </ul>
+
+          <div class="sort-todos">
+            <!-- REMOVE COMPLETED  -->
+              <span>{{getTotalTodos()}} items left</span>
+              <button class="all-todos" ng-click="loadTodos()">All</button>
+              <button class="active-todos">Active</button>
+              <button class="completed-todos">Completed</button>
+              <button class="clear-completed" ng-click="clearCompleted()" ng-hide="todo.is_completed-false">Clear completed</button>
+          </div>
+
+        </div>
+    </div>
+  </body>
+</html>
