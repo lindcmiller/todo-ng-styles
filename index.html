@@ -31,7 +31,7 @@
             <li class="todo-li" ng-repeat="todo in todos" ng-dblclick="editTodo(todo)">
               <input type="checkbox" class="hidden-checkbox" value="none" ng-model="todo.is_completed" ng-hide="todo.editing"/>
               <svg class="round-checkbox" ng-hide="todo.editing || todo.is_completed"></svg>
-              <svg class="selected-checkbox" ng-show="todo.is_completed"></svg>
+              <svg class="selected-checkbox" ng-show="todo.is_completed" ng-hide="todo.editing || !todo.is_completed"></svg>
               <span class="is_completed-{{todo.is_completed}} todo-task" ng-hide="todo.editing">{{todo.title}}</span>
 
               <form ng-submit="updateTodo(todo)" ng-show="todo.editing">

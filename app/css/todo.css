@@ -62,8 +62,6 @@ input:focus {
 .todo-list {
   height: 100%;
   list-style-type: none;
-  overflow: hidden;
-  display: table;
   padding: 0;
 }
 
@@ -150,17 +148,16 @@ input:focus {
  /* ------- each todo  ------- */
 
 .todo-li {
-  display: table-cell;
   overflow: hidden;
   width: 100%;
   float: left;
   border-bottom: 1px solid rgba(0,0,0,0.05);
   padding: 0.75em 0;
+  white-space: nowrap;
+  height: 100%;
 }
 
 #toggle-edit {
-  display: table-cell;
-  overflow: hidden;
   width: 90%;
   float: left;
   border: 1px solid black;
@@ -179,16 +176,15 @@ input:focus {
 
 .sort-todos {
   clear: both;
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  height: 100%;
+  width: 97%;
   position: relative;
-  right: 0;
-  left: 0;
 }
 
 .sort-nav {
   margin: 0 auto;
-  width: 30%;
+  width: 35%;
   display: inherit;
 }
 
@@ -200,13 +196,9 @@ input:focus {
   display: inline-block;
   text-align: center;
   border: none;
-  font-size: 0.9em;
-}
-
-.all-todos,
-.active-todos,
-.completed-todos {
-  margin: 0 0.25em;
+  font-size: 0.85em;
+  padding: 0.25em 0.5em;
+  margin: 0.5em;
 }
 
 .all-todos:hover,
@@ -219,15 +211,16 @@ input:focus {
 .all-todos:focus,
 .active-todos:focus,
 .completed-todos:focus {
-  border: 1px solid #EBD7D7;
+  border: 1px solid ##F0D5D5;
   border-radius: 3px;
 }
 
 .clear-completed {
-  font-size: 0.9em;
+  font-size: 0.85em;
   position: relative;
   display: inline-block;
   float: right;
+  margin: 0.5em;
 }
 
 .clear-completed:hover {
