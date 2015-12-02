@@ -38,6 +38,16 @@ button:focus {
   outline: none;
 }
 
+input:focus {
+  outline: none;
+}
+
+.title {
+  color: #EBD7D7;
+  width: 100%;
+  text-align: center;
+}
+
 .wrapper {
   height: 100%;
   width: 60%;
@@ -47,12 +57,6 @@ button:focus {
   border-right: 1px solid rgba(0,0,0,0.1);
   box-shadow: 0 0  40px -10px #C4C4C4;
   overflow: hidden;
-}
-
-.title {
-  color: #EBD7D7;
-  width: 100%;
-  text-align: center;
 }
 
 .todo-list {
@@ -80,6 +84,8 @@ button:focus {
   bottom: 0;
 }
 
+/* ------- add a todo -------- */
+
 .down-arrow {
   font: 3em BlinkMacSystemFont;
   width: 7%;
@@ -102,6 +108,8 @@ button:focus {
 .new-todo:-moz-input-placeholder{color:#E6E6E6};
 .new-todo::-moz-input-placeholder{color:#E6E6E6};
 .new-todo:-ms-input-placeholder{color:#E6E6E6};*/
+
+/* ------- custom checkboxes ------- */
 
 .round-checkbox {
   border: 1px solid #F0F0F0;
@@ -127,6 +135,19 @@ button:focus {
   margin: 0.75em 1em;
   opacity: 0;
 }
+
+.is_completed-true {
+  text-decoration: line-through;
+  color: #D9D9D9;
+  transition: color 0.4s;
+  font-weight: 100;
+}
+
+.is_completed-false {
+  transition: color 0.4s;
+}
+
+ /* ------- each todo  ------- */
 
 .todo-li {
   display: table-cell;
@@ -154,20 +175,21 @@ button:focus {
   font-weight: 200;
 }
 
-input:focus {
-  outline: none;
-}
+ /*------- sort navigation  ------- */
 
 .sort-todos {
-  margin: 0 1em;
   clear: both;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  right: 0;
+  left: 0;
 }
 
 .sort-nav {
   margin: 0 auto;
   width: 30%;
   display: inherit;
-  padding-bottom: 0.5em;
 }
 
 .total-todos,
@@ -199,17 +221,6 @@ input:focus {
 .completed-todos:focus {
   border: 1px solid #EBD7D7;
   border-radius: 3px;
-}
-
-.is_completed-true {
-  text-decoration: line-through;
-  color: #D9D9D9;
-  transition: color 0.4s;
-  font-weight: 100;
-}
-
-.is_completed-false {
-  transition: color 0.4s;
 }
 
 .clear-completed {
