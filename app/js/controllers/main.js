@@ -42,6 +42,35 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
     });
   };
 
+// sort todos nav on bottom
+
+// # of total todos
+  $scope.getTotalTodos = function() {
+    return $scope.todos.length;
+  };
+
+// all todos -- need all completed and incompleted
+
+  $scope.showAllTodos = function() {
+    return $scope.todos;
+  };
+
+// active todos
+  $scope.showActive = function() {
+    $scope.todos = $scope.todos.filter(function(todo) {
+      loadTodos();
+      return !todo.is_completed;
+    });
+  };
+
+// completed todos
+  $scope.showCompleted = function() {
+    $scope.todos = $scope.todos.filter(function(todo) {
+      return todo.is_completed;
+    });
+  };
+
+// permanently clear completed todos = delete from api
   $scope.clearCompleted = function() {
     var completedTodos = [];
     for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
@@ -62,8 +91,4 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
 
   }
 
-  $scope.getTotalTodos = function() {
-    return $scope.todos.length;
-  };
-  
 });
