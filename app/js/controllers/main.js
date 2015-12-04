@@ -42,23 +42,37 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
     });
   };
 
-// sort todos nav on bottom
-
-// # of total todos
-  $scope.getTotalTodos = function() {
-    return $scope.todos.length;
+  $scope.deleteTodo = function(todo) {
+    $http.delete('/api/v1/todos/' + todo.id)
+      .catch(function(err) {
+        console.log("Could not delete this to-do.");
+      });
+    loadTodos();
   };
 
-// all todos -- need all completed and incompleted
+// sort todos nav on bottom
+
+// # of total remaining todos
+  $scope.getTotalIncompleteTodos = function() {
+    var incompleteTodos = [];
+    for(var incompleteIndex = 0; incompleteIndex < $scope.todos.length; incompleteIndex++) {
+      if ($scope.todos[incompleteIndex].is_completed-true){
+        incompleteTodos.push($scope.todos[incompleteIndex]);
+      }
+    }
+    return incompleteTodos.length;
+  };
+
+// all todos -- both complete and incomplete
 
   $scope.showAllTodos = function() {
+    loadTodos();
     return $scope.todos;
   };
 
 // active todos
   $scope.showActive = function() {
     $scope.todos = $scope.todos.filter(function(todo) {
-      loadTodos();
       return !todo.is_completed;
     });
   };
@@ -89,6 +103,40 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
     $q.all(promises)
     .then(loadTodos);
 
-  }
+  };
+
+// keep item completed upon page refresh
+
+  $scope.markCompleted = function(todo) {
+    todo.is_completed = true;
+    $http.put('/api/v1/todos/' + todo.id, todo)
+      .catch(function(err) {
+        console.log("Could not mark this to-do complete.");
+    });
+  };
+
+// keep item incomplete upon page refresh
+
+  $scope.markIncomplete = function(todo) {
+    todo.is_completed = false;
+    $http.put('/api/v1/todos/' + todo.id, todo)
+      .catch(function(err) {
+        console.log("Could not mark this to-do incomplete.");
+    });
+  };
+
+// mark all todos complete or incomplete by clicking carot character
+  var allMarkedComplete = false;
+  $scope.markAllTodos = function(todo) {
+    $scope.todos.forEach(function(todo) {
+      if(allMarkedComplete == false) {
+        $scope.markCompleted(todo);
+      } else {
+        $scope.markIncomplete(todo);
+      }
+    });
+    allMarkedComplete = !allMarkedComplete;
+    loadTodos();
+  };
 
 });
