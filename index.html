@@ -30,12 +30,12 @@
             <!-- EDIT & MARK COMPLETE -->
             <li class="todo-li" ng-repeat="todo in todos" ng-dblclick="editTodo(todo)">
               <input type="checkbox" class="hidden-checkbox" value="none" ng-model="todo.is_completed" ng-hide="todo.editing"/>
-              <svg class="round-checkbox"></svg>
+              <svg class="round-checkbox" ng-hide="todo.editing || todo.is_completed"></svg>
+              <svg class="selected-checkbox" ng-show="todo.is_completed"></svg>
               <span class="is_completed-{{todo.is_completed}} todo-task" ng-hide="todo.editing">{{todo.title}}</span>
 
               <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
-                <input class="" type="text" ng-model="todo.title" required="string"/>
-                <button class="">Save</button>
+                <input class="" id="toggle-edit" type="text" ng-model="todo.title" required="string"/>
               </form>
             </li>
 
@@ -45,9 +45,9 @@
             <!-- REMOVE COMPLETED  -->
               <span class="total-todos">{{getTotalTodos()}} items left</span>
               <span class="sort-nav">
-                <button class="all-todos" ng-click="loadTodos()">All</button>
-                <button class="active-todos">Active</button>
-                <button class="completed-todos">Completed</button>
+                <button class="all-todos" ng-click="showAllTodos()">All</button>
+                <button class="active-todos" ng-click="showActive()">Active</button>
+                <button class="completed-todos" ng-click="showCompleted()">Completed</button>
               </span>
 
 
