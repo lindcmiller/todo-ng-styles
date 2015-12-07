@@ -141,19 +141,21 @@ input:focus {
 .round-checkbox {
   border: 1px solid #F0F0F0;
   border-radius: 50%;
-  width: 1.8em;
   height: 1.8em;
-  z-index: 5;
+  width: 1.8em;
   background-color: inherit;
-  margin: 0.5em 0.5em -0.4em;
+  margin: 0.9em 0.5em 0;
+  position: absolute;
 }
 
 .selected-checkbox {
   width: 2em;
   height: 2em;
-  margin: 0.5em 0.5em -0.4em;
-  z-index: 5;
+  margin: 0.9em 0.5em 0;
   background: url("images/checked-circle.png") no-repeat;
+  position: absolute;
+  top: 0;
+  bottom: 0;
 }
 
 .is_completed-true {
@@ -177,6 +179,7 @@ input:focus {
   white-space: nowrap;
   position: relative;
   font-weight: 200;
+  height: 3.75em;
 }
 
 #toggle-edit {
@@ -198,6 +201,9 @@ input:focus {
   padding-left: 0.3em;
   line-height: 2.5em;
   width: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 2em;
 }
 
 .delete-todo {
