@@ -114,22 +114,22 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
 
 // permanently clear completed todos = delete from api
   $scope.clearCompleted = function() {
-    var completedTodos = [];
-    for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
-      if ($scope.todos[completedIndex].is_completed){
-        completedTodos.push($scope.todos[completedIndex]);
+      var completedTodos = [];
+      for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
+        if ($scope.todos[completedIndex].is_completed){
+          completedTodos.push($scope.todos[completedIndex]);
+        }
       }
-    }
 
-    var promises = completedTodos.map(function(todo) {
-      return $http.delete('/api/v1/todos/' + todo.id)
-        .catch(function(err) {
-          console.log("Could not delete completed to-dos.");
-        });
-    });
+      var promises = completedTodos.map(function(todo) {
+        return $http.delete('/api/v1/todos/' + todo.id)
+          .catch(function(err) {
+            console.log("Could not delete completed to-dos.");
+          });
+      });
 
-    $q.all(promises)
-    .then(loadTodos);
+      $q.all(promises)
+      .then(loadTodos);
 
   };
 

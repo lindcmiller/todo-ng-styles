@@ -15,50 +15,48 @@
       <div ng-controller="TodoController">
         <h1 class="title">todos</h1>
 
-        <div class="wrapper">
-          <ul class="todo-list">
+        <div class="todo-list">
 
-            <!-- mark all todos complete -->
-            <div class="top-shadow">
-              <button class="down-arrow" ng-click="markAllTodos(todo)">&caron;</button>
-              <!-- to darken when all completed
-               <button class="down-arrow-all-completed" ng-click="markAllTodos(todo)">&caron;</button> -->
+          <!-- mark all todos complete -->
+          <div class="todo-list__new">
+            <button class="down-arrow" ng-click="markAllTodos(todo)">&caron;</button>
+            <!-- to darken when all completed
+             <button class="down-arrow-all-completed" ng-click="markAllTodos(todo)">&caron;</button> -->
 
-              <!-- ADD -->
-              <form ng-submit="addTodo()">
-                <input class="new-todo" type="text" ng-model="todo" placeholder="What needs to be done?" required="string"/>
-              </form>
-            </div>
+            <!-- ADD -->
+            <form ng-submit="addTodo()">
+              <input class="new-todo" type="text" ng-model="todo" placeholder="What needs to be done?" required="string"/>
+            </form>
+          </div>
+
+          <ul>
 
             <!-- EDIT & MARK COMPLETE -->
-              <li class="todo-li" ng-repeat="todo in todos" ng-init="isDeleteShown = false" ng-mouseover="isDeleteShown = true" ng-mouseleave="isDeleteShown = false">
-                <svg class="round-checkbox" ng-hide="todo.editing || todo.is_completed" ng-click="markCompleted(todo)"></svg>
-                <svg class="selected-checkbox" ng-show="todo.is_completed" ng-hide="todo.editing || !todo.is_completed" ng-click="markIncomplete(todo)"></svg>
-                <div class="is_completed-{{todo.is_completed}} todo-task" ng-dblclick="editTodo(todo)" ng-hide="todo.editing">{{todo.title}}</div>
-                <button class="delete-todo" ng-show="isDeleteShown && !todo.editing" ng-click="deleteTodo(todo)"></button>
-
-                <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
-                  <input class="" id="toggle-edit" type="text" ng-model="todo.title" autofocus required="string"/>
-                </form>
-
-              </li>
-
+            <li class="todo-list__task" ng-repeat="todo in todos" ng-init="isDeleteShown = false" ng-mouseover="isDeleteShown = true" ng-mouseleave="isDeleteShown = false">
+              <svg class="round-checkbox" ng-hide="todo.editing || todo.is_completed" ng-click="markCompleted(todo)"></svg>
+              <svg class="selected-checkbox" ng-show="todo.is_completed" ng-hide="todo.editing || !todo.is_completed" ng-click="markIncomplete(todo)"></svg>
+              <div class="is_completed-{{todo.is_completed}} todo-list__task-title" ng-dblclick="editTodo(todo)" ng-hide="todo.editing">{{todo.title}}</div>
+              <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
+                <input class="" id="todo-list__task-edit" type="text" ng-model="todo.title" autofocus required="string"/>
+              </form>
+              <button class="todo-list__task-delete" ng-show="isDeleteShown && !todo.editing" ng-click="deleteTodo(todo)"></button>
+            </li>
           </ul>
 
-          <div class="sort-todos">
+          <div class="footer clearfix">
             <!-- REMOVE COMPLETED  -->
-            <span class="total-todos"
+            <span class="todo-list__total"
             ng-pluralize count="getTotalIncompleteTodos()"
             when="{'one': '{{getTotalIncompleteTodos()}} item left',
             'other': '{{getTotalIncompleteTodos()}} items left'}">
             </span>
-            <ul class="sort-nav">
-              <li class="sorter" ng-click="showAllTodos(); selectSort('All')" ng-class="{selected: selectedFilter == 'All'}">All</li>
-              <li class="sorter" ng-click="showActive(); selectSort('Active')" ng-class="{selected: selectedFilter == 'Active'}">Active</li>
-              <li class="sorter" ng-click="showCompleted(); selectSort('Completed')" ng-class="{selected: selectedFilter == 'Completed'}">Completed</li>
-            </ul>
+            <div class="todo-list__filters">
+              <button class="button" ng-click="showAllTodos(); selectSort('All')" ng-class="{selected: selectedFilter == 'All'}">All</button>
+              <button class="button" ng-click="showActive(); selectSort('Active')" ng-class="{selected: selectedFilter == 'Active'}">Active</button>
+              <button class="button" ng-click="showCompleted(); selectSort('Completed')" ng-class="{selected: selectedFilter == 'Completed'}">Completed</button>
+            </div>
 
-            <button class="clear-completed" ng-show="todo.is_completed" ng-click="clearCompleted()">Clear completed</button>
+            <button class="todo-list__clear-completed" ng-hide="todo.is_completed-false" ng-click="clearCompleted()">Clear completed</button>
 
           </div>
 
