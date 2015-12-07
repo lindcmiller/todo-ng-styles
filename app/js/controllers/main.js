@@ -31,6 +31,11 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
   };
 
   $scope.editTodo = function(todo) {
+    for(var index = 0; index < $scope.todos.length; index++) {
+      if($scope.todos[index].editing == true) {
+        $scope.todos[index].editing = false;
+      }
+    }
     todo.editing = true;
   };
 
@@ -63,6 +68,15 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
     return incompleteTodos.length;
   };
 
+// add style for selected sort
+//
+  $scope.selectedFilter = "All";
+
+  $scope.selectSort = function(filter) {
+    $scope.selectedFilter = filter;
+
+  };
+
 // all todos -- both complete and incomplete
 
   $scope.showAllTodos = function() {
@@ -72,15 +86,29 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
 
 // active todos
   $scope.showActive = function() {
-    $scope.todos = $scope.todos.filter(function(todo) {
-      return !todo.is_completed;
+    $http.get('/api/v1/todos')
+      .then(function(response) {
+        $scope.loaded = true;
+        $scope.todos = response.data.todos;
+        $scope.todos = $scope.todos.filter(function(todo) {
+          return !todo.is_completed;
+      }, function() {
+        console.log("Cannot load to-dos.");
+      });
     });
   };
 
 // completed todos
   $scope.showCompleted = function() {
-    $scope.todos = $scope.todos.filter(function(todo) {
-      return todo.is_completed;
+    $http.get('/api/v1/todos')
+      .then(function(response) {
+        $scope.loaded = true;
+        $scope.todos = response.data.todos;
+        $scope.todos = $scope.todos.filter(function(todo) {
+          return todo.is_completed;
+      }, function() {
+        console.log("Cannot load to-dos.");
+      });
     });
   };
 

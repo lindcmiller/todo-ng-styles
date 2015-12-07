@@ -58,6 +58,7 @@ input:focus {
   background-color: #FFFFFF;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  max-width: 600px;
 }
 
 .todo-list {
@@ -78,7 +79,6 @@ input:focus {
 .todo-task {
   overflow: hidden;
   height: 100%;
-  width: 90%;
   margin: 0 auto;
   position: relative;
   top: 0;
@@ -89,11 +89,21 @@ input:focus {
 
 .down-arrow {
   font: 3em BlinkMacSystemFont;
-  width: 7%;
+  width: 7.5%;
   float: left;
   height: 0.9em;
   border: 0;
   color: #E6E6E6;
+}
+
+/*darken when all are marked complete */
+.down-arrow-all-completed {
+  font: 3em BlinkMacSystemFont;
+  width: 7.5%;
+  float: left;
+  height: 0.9em;
+  border: 0;
+  color: #737373;
 }
 
 .new-todo {
@@ -146,13 +156,6 @@ input:focus {
   background: url("images/checked-circle.png") no-repeat;
 }
 
-.hidden-checkbox {
-  z-index: 10;
-  position: absolute;
-  margin: 1.4em 1.1em;
-  opacity: 0;
-}
-
 .is_completed-true {
   text-decoration: line-through;
   color: #D9D9D9;
@@ -177,20 +180,24 @@ input:focus {
 }
 
 #toggle-edit {
-  width: 87%;
+  width: 93%;
   float: left;
   border: 1px solid black;
   box-shadow: inset -2px -2px 1px rgba(0,0,0,0.05);
   font-size: 1.5em;
   font-weight: 200;
-  margin-left: 1.8em;
+  margin-left: 7%;
   padding: 0.6em;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .todo-task {
   font-size: 1.5em;
   padding-left: 0.3em;
   line-height: 2.5em;
+  width: 100%;
 }
 
 .delete-todo {
@@ -215,38 +222,36 @@ input:focus {
 .sort-todos {
   clear: both;
   margin: 0 auto;
-  height: 100%;
+  height: 2.2em;
   width: 97%;
   position: relative;
+  padding-top: 0.6em;
 }
 
 .sort-nav {
   margin: 0 auto;
-  width: 35%;
+  width: 50%;
   display: inherit;
 }
 
 .total-todos,
-.all-todos,
-.active-todos,
-.completed-todos {
+.sorter {
   float: left;
   display: inline-block;
   text-align: center;
   border: none;
   font-size: 0.85em;
-  padding: 0.25em 0.5em;
+  padding: 0.2em 0.5em 0.25em;
+  margin: 0 0.5em;
 }
 
-.all-todos:hover,
-.active-todos:hover,
-.completed-todos:hover {
+.sorter:hover {
   border: 1px solid #EBD7D7;
   border-radius: 3px;
 }
 
 .selected {
-  border: 1px solid ##F0D5D5;
+  border: 1px solid #F0D5D5;
   border-radius: 3px;
 }
 
@@ -255,6 +260,8 @@ input:focus {
   position: relative;
   display: inline-block;
   float: right;
+  padding: 0.2em 0.5em 0.25em;
+  margin: 0 0.5em;
 }
 
 .clear-completed:hover {
