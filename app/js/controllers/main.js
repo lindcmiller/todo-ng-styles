@@ -113,6 +113,17 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
   };
 
 // permanently clear completed todos = delete from api
+//
+  $scope.getTotalCompleteTodos = function() {
+    var completeTodos = [];
+    for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
+      if ($scope.todos[completeIndex].is_completed-false){
+        completeTodos.push($scope.todos[completeIndex]);
+      }
+    }
+    return completeTodos.length;
+  };
+
   $scope.clearCompleted = function() {
       var completedTodos = [];
       for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {

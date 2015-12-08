@@ -88,9 +88,9 @@ ul {
 }
 
 /*darken when all are marked complete */
-/*.down-arrow-all-completed {
-  opacity: 0.5; OR   color: #737373;
-}*/
+.darken {
+  color: #737373;
+}
 
 .todo-list__new {
   padding: 1em 0;
@@ -177,7 +177,7 @@ ul {
   overflow: hidden;
 }
 
-#todo-list__task-edit {
+.todo-list__task-edit {
   width: 93%;
   float: left;
   border: 1px solid black;
@@ -238,6 +238,7 @@ ul {
 .button:hover {
   border-color: #EBD7D7;
   border-radius: 3px;
+  z-index: 100;
 }
 
 .selected {
@@ -247,6 +248,7 @@ ul {
 
 .todo-list__clear-completed {
   float: right;
+  position: relative;
 }
 
 .todo-list__clear-completed:hover {

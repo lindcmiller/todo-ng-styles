@@ -19,7 +19,7 @@
 
           <!-- mark all todos complete -->
           <div class="todo-list__new">
-            <button class="down-arrow" ng-click="markAllTodos(todo)">&caron;</button>
+            <button class="down-arrow" ng-click="markAllTodos(todo)" ng-class="{darken: getTotalIncompleteTodos() === 0}">&caron;</button>
             <!-- to darken when all completed
              <button class="down-arrow-all-completed" ng-click="markAllTodos(todo)">&caron;</button> -->
 
@@ -37,7 +37,7 @@
               <svg class="selected-checkbox" ng-show="todo.is_completed" ng-hide="todo.editing || !todo.is_completed" ng-click="markIncomplete(todo)"></svg>
               <div class="is_completed-{{todo.is_completed}} todo-list__task-title" ng-dblclick="editTodo(todo)" ng-hide="todo.editing">{{todo.title}}</div>
               <form ng-submit="updateTodo(todo)" ng-show="todo.editing">
-                <input class="" id="todo-list__task-edit" type="text" ng-model="todo.title" autofocus required="string"/>
+                <input class="todo-list__task-edit" type="text" ng-model="todo.title" required="string"/>
               </form>
               <button class="todo-list__task-delete" ng-show="isDeleteShown && !todo.editing" ng-click="deleteTodo(todo)"></button>
             </li>
@@ -56,7 +56,7 @@
               <button class="button" ng-click="showCompleted(); selectSort('Completed')" ng-class="{selected: selectedFilter == 'Completed'}">Completed</button>
             </div>
 
-            <button class="todo-list__clear-completed" ng-hide="todo.is_completed-false" ng-click="clearCompleted()">Clear completed</button>
+            <button class="todo-list__clear-completed" ng-click="clearCompleted()" ng-show="getTotalCompleteTodos() > 0">Clear completed</button>
 
           </div>
 
