@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html {font-size: 1em;}
 
 body {
@@ -6,7 +10,6 @@ body {
   font-weight: 100;
   color: #4D4D4D;
   line-height: 1.45;
-  box-sizing: border-box;
 }
 
 p {margin-bottom: 1.3em;}
@@ -43,49 +46,37 @@ input:focus {
   outline: none;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clearfix:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+/* ------- header -------- */
+
 .title {
   color: #EBD7D7;
   font-weight: 100;
-  width: 100%;
   text-align: center;
   margin-top: 0.1em;
 }
 
-.wrapper {
-  height: 100%;
+/* ------- add a todo -------- */
+
+.todo-list {
   width: 60%;
   margin: -1em auto 7em;
   background-color: #FFFFFF;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+              0 25px 50px 0 rgba(0, 0, 0, 0.1);
   max-width: 600px;
 }
-
-.todo-list {
-  height: 100%;
-  list-style-type: none;
-  padding: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.top-shadow {
-  width: 100%;
-  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.05);
-  overflow: hidden;
-}
-
-.new-todo,
-.todo-task {
-  overflow: hidden;
-  height: 100%;
-  margin: 0 auto;
-  position: relative;
-  top: 0;
-  bottom: 0;
-}
-
-/* ------- add a todo -------- */
 
 .down-arrow {
   font: 3em BlinkMacSystemFont;
@@ -97,22 +88,20 @@ input:focus {
 }
 
 /*darken when all are marked complete */
-.down-arrow-all-completed {
-  font: 3em BlinkMacSystemFont;
-  width: 7.5%;
-  float: left;
-  height: 0.9em;
-  border: 0;
+.darken {
   color: #737373;
+}
+
+.todo-list__new {
+  padding: 1em 0;
+  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.05);
 }
 
 .new-todo {
   border: 0;
   font-weight: 200;
   font-size: 1.5em;
-  float: left;
-  padding: 0 0 0.75em 0.6em;
-  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.05);
+  padding-left: 0.6em;
 }
 
 .new-todo::-webkit-input-placeholder {
@@ -171,18 +160,24 @@ input:focus {
 
  /* ------- each todo  ------- */
 
-.todo-li {
-  overflow: hidden;
-  width: 100%;
-  float: left;
+.todo-list__task {
+  display: block;
   border-bottom: 1px solid rgba(0,0,0,0.05);
-  white-space: nowrap;
   position: relative;
   font-weight: 200;
   height: 3.75em;
 }
 
-#toggle-edit {
+.todo-list__task-title {
+  font-size: 1.5em;
+  line-height: 2.5em;
+  padding: 0 2.3em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.todo-list__task-edit {
   width: 93%;
   float: left;
   border: 1px solid black;
@@ -192,21 +187,10 @@ input:focus {
   margin-left: 7%;
   padding: 0.6em;
   position: relative;
-  box-sizing: border-box;
   overflow: hidden;
 }
 
-.todo-task {
-  font-size: 1.5em;
-  padding-left: 0.3em;
-  line-height: 2.5em;
-  width: 100%;
-  display: inline-block;
-  position: absolute;
-  left: 2em;
-}
-
-.delete-todo {
+.todo-list__task-delete {
   position: absolute;
   top: 1.3em;
   right: 0.5em;
@@ -219,41 +203,42 @@ input:focus {
   background: url("images/original-delete.png") no-repeat;
 }
 
-.delete-todo:hover {
+.todo-list__task-delete:hover {
   background: url("images/hover-delete.png") no-repeat;
 }
 
- /*------- sort navigation  ------- */
+ /*------- footer / sort navigation  ------- */
 
-.sort-todos {
-  clear: both;
-  margin: 0 auto;
-  height: 2.2em;
-  width: 97%;
-  position: relative;
-  padding-top: 0.6em;
-}
-
-.sort-nav {
-  margin: 0 auto;
-  width: 50%;
-  display: inherit;
-}
-
-.total-todos,
-.sorter {
-  float: left;
-  display: inline-block;
-  text-align: center;
-  border: none;
+.footer {
+  padding: 0.75em;
   font-size: 0.85em;
-  padding: 0.2em 0.5em 0.25em;
-  margin: 0 0.5em;
+  position: relative;
 }
 
-.sorter:hover {
-  border: 1px solid #EBD7D7;
+.todo-list__total {
+  float: left;
+  padding-top: 0.25em;
+}
+
+.todo-list__filters {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.button {
+  display: inline-block;
+  border: 1px solid transparent;
+  padding: 0.25em 0.5em;
+}
+
+.button:hover {
+  border-color: #EBD7D7;
   border-radius: 3px;
+  z-index: 100;
 }
 
 .selected {
@@ -261,15 +246,19 @@ input:focus {
   border-radius: 3px;
 }
 
-.clear-completed {
-  font-size: 0.85em;
-  position: relative;
-  display: inline-block;
+.todo-list__clear-completed {
   float: right;
-  padding: 0.2em 0.5em 0.25em;
-  margin: 0 0.5em;
+  position: relative;
 }
 
-.clear-completed:hover {
+.todo-list__clear-completed:hover {
   text-decoration: underline;
+}
+
+/*------- responsive  ------- */
+
+@media(max-width: 600px) {
+  .todo-list {
+    width: 100%;
+  }  
 }

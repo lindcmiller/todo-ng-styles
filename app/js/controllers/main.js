@@ -113,23 +113,34 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
   };
 
 // permanently clear completed todos = delete from api
-  $scope.clearCompleted = function() {
-    var completedTodos = [];
-    for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
-      if ($scope.todos[completedIndex].is_completed){
-        completedTodos.push($scope.todos[completedIndex]);
+//
+  $scope.getTotalCompleteTodos = function() {
+    var completeTodos = [];
+    for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
+      if ($scope.todos[completeIndex].is_completed-false){
+        completeTodos.push($scope.todos[completeIndex]);
       }
     }
+    return completeTodos.length;
+  };
 
-    var promises = completedTodos.map(function(todo) {
-      return $http.delete('/api/v1/todos/' + todo.id)
-        .catch(function(err) {
-          console.log("Could not delete completed to-dos.");
-        });
-    });
+  $scope.clearCompleted = function() {
+      var completedTodos = [];
+      for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
+        if ($scope.todos[completedIndex].is_completed){
+          completedTodos.push($scope.todos[completedIndex]);
+        }
+      }
 
-    $q.all(promises)
-    .then(loadTodos);
+      var promises = completedTodos.map(function(todo) {
+        return $http.delete('/api/v1/todos/' + todo.id)
+          .catch(function(err) {
+            console.log("Could not delete completed to-dos.");
+          });
+      });
+
+      $q.all(promises)
+      .then(loadTodos);
 
   };
 
