@@ -1,34 +1,18 @@
-'use strict';
+var todoApp = angular.module('todoApp');
 
-var todoApp = angular.module("todoApp", []);
-
-todoApp.controller('TodoController', function($scope, $http, $q) {
+todoApp.controller('TodosController', function($scope, $q, TodoService) {
 
   $scope.todos = [];
 
   var loadTodos = function() {
-    $http.get('/api/v1/todos')
-      .then(function(response) {
+    TodoService.loadTodos()
+      .then(function(todos) {
         $scope.loaded = true;
-        $scope.todos = response.data.todos;
-      }, function() {
-        console.log("Cannot load to-dos.");
+        $scope.todos = todos;
       });
   };
 
   loadTodos();
-
-  $scope.addTodo = function() {
-    $http.post('/api/v1/todos', {
-      title: $scope.todo,
-      is_completed: false
-    }).then(function(response) {
-      $scope.todos.push(response.data.todo);
-      $scope.todo = "";
-    }, function(err) {
-      console.log("Could not add this to-do.");
-    });
-  };
 
   $scope.editTodo = function(todo) {
     for(var index = 0; index < $scope.todos.length; index++) {
@@ -40,22 +24,28 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
   };
 
   $scope.updateTodo = function(todo) {
-    todo.editing = false;
-    $http.put('/api/v1/todos/' + todo.id, todo)
-    .catch(function(err) {
-      console.log("Could not update this to-do.");
+    TodoService.updateTodo(todo)
+      .then(function() {
+        todo.editing = false;
+        loadTodos();
+      });
+  };
+
+  $scope.addTodo = function() {
+    TodoService.addTodo($scope.todo)
+    .then(function() {
+      $scope.todo = "";
+      loadTodos();
     });
+
   };
 
   $scope.deleteTodo = function(todo) {
-    $http.delete('/api/v1/todos/' + todo.id)
-      .catch(function(err) {
-        console.log("Could not delete this to-do.");
+    TodoService.deleteTodo(todo)
+      .then(function() {
+        loadTodos();
       });
-    loadTodos();
   };
-
-// sort todos nav on bottom
 
 // # of total remaining todos
   $scope.getTotalIncompleteTodos = function() {
@@ -68,103 +58,72 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
     return incompleteTodos.length;
   };
 
-// add style for selected sort
-//
-  $scope.selectedFilter = "All";
+// sort todos nav on bottom
 
-  $scope.selectSort = function(filter) {
-    $scope.selectedFilter = filter;
-
-  };
-
-// all todos -- both complete and incomplete
-
-  $scope.showAllTodos = function() {
-    loadTodos();
+$scope.getTodos = function() {
+  if($scope.selectedFilter == 'All') {
     return $scope.todos;
-  };
-
-// active todos
-  $scope.showActive = function() {
-    $http.get('/api/v1/todos')
-      .then(function(response) {
-        $scope.loaded = true;
-        $scope.todos = response.data.todos;
-        $scope.todos = $scope.todos.filter(function(todo) {
-          return !todo.is_completed;
-      }, function() {
-        console.log("Cannot load to-dos.");
-      });
+  } else if($scope.selectedFilter == 'Active') {
+    return $scope.todos.filter(function(todo) {
+      return !todo.is_completed;
     });
-  };
-
-// completed todos
-  $scope.showCompleted = function() {
-    $http.get('/api/v1/todos')
-      .then(function(response) {
-        $scope.loaded = true;
-        $scope.todos = response.data.todos;
-        $scope.todos = $scope.todos.filter(function(todo) {
-          return todo.is_completed;
-      }, function() {
-        console.log("Cannot load to-dos.");
-      });
+  } else if($scope.selectedFilter == 'Completed') {
+    return $scope.todos.filter(function(todo) {
+      return todo.is_completed;
     });
-  };
+  }
+};
 
-// permanently clear completed todos = delete from api
-//
-  $scope.getTotalCompleteTodos = function() {
-    var completeTodos = [];
-    for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
-      if ($scope.todos[completeIndex].is_completed-false){
-        completeTodos.push($scope.todos[completeIndex]);
-      }
+// add border for selected filter
+
+$scope.selectedFilter = "All";
+$scope.selectSort = function(filter) {
+  $scope.selectedFilter = filter;
+};
+
+// change completion status
+
+$scope.markCompleted = function(todo) {
+  todo.is_completed = true;
+  TodoService.updateTodo(todo);
+};
+
+$scope.markIncomplete = function(todo) {
+  todo.is_completed = false;
+  TodoService.updateTodo(todo);
+};
+
+// create array to hold all completed todos
+
+function createCompletedTodosArray() {
+  var completeTodos = [];
+  for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
+    if ($scope.todos[completeIndex].is_completed-false){
+      completeTodos.push($scope.todos[completeIndex]);
     }
-    return completeTodos.length;
-  };
+  }
+  return completeTodos;
+};
 
-  $scope.clearCompleted = function() {
-      var completedTodos = [];
-      for(var completedIndex = 0; completedIndex < $scope.todos.length; completedIndex++) {
-        if ($scope.todos[completedIndex].is_completed){
-          completedTodos.push($scope.todos[completedIndex]);
-        }
-      }
+// counter for show/hide of the 'clear completed' button
 
-      var promises = completedTodos.map(function(todo) {
-        return $http.delete('/api/v1/todos/' + todo.id)
-          .catch(function(err) {
-            console.log("Could not delete completed to-dos.");
-          });
-      });
+$scope.getTotalCompleteTodos = function() {
+  return createCompletedTodosArray().length;
+};
 
-      $q.all(promises)
-      .then(loadTodos);
+$scope.clearCompleted = function() {
+  var completeTodos = createCompletedTodosArray();
+  var promises = completeTodos.map(function(todo) {
+    return TodoService.deleteTodo(todo);
+  });
 
-  };
+  $q.all(promises)
+  .then(loadTodos);
 
-// keep item completed upon page refresh
-
-  $scope.markCompleted = function(todo) {
-    todo.is_completed = true;
-    $http.put('/api/v1/todos/' + todo.id, todo)
-      .catch(function(err) {
-        console.log("Could not mark this to-do complete.");
-    });
-  };
-
-// keep item incomplete upon page refresh
-
-  $scope.markIncomplete = function(todo) {
-    todo.is_completed = false;
-    $http.put('/api/v1/todos/' + todo.id, todo)
-      .catch(function(err) {
-        console.log("Could not mark this to-do incomplete.");
-    });
-  };
+};
 
 // mark all todos complete or incomplete by clicking carot character
+//
   var allMarkedComplete = false;
   $scope.markAllTodos = function(todo) {
     $scope.todos.forEach(function(todo) {
@@ -175,7 +134,7 @@ todoApp.controller('TodoController', function($scope, $http, $q) {
       }
     });
     allMarkedComplete = !allMarkedComplete;
-    loadTodos();
+    TodoService.loadTodos();
   };
 
 });

@@ -52,12 +52,6 @@ ul {
   list-style: none;
 }
 
-.clearfix:after {
-  clear: both;
-  content: "";
-  display: table;
-}
-
 /* ------- header -------- */
 
 .title {
@@ -260,5 +254,13 @@ ul {
 @media(max-width: 600px) {
   .todo-list {
     width: 100%;
-  }  
+  }
+}
+
+/* ------ helpers ------- */
+
+.clearfix:after {
+  clear: both;
+  content: "";
+  display: table;
 }

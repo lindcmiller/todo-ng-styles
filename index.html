@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script type="text/javascript" src="app/js/app.js"></script>
     <script type="text/javascript" src="app/js/controllers/main.js"></script>
+    <script type="text/javascript" src="app/js/services/todos.js"></script>
+
     <link rel="stylesheet" href="app/css/normalize.css"></script>
     <link rel="stylesheet" href="app/css/todo.css"></script>
     <title>todos</title>
@@ -12,7 +15,7 @@
   </head>
   <body>
 
-      <div ng-controller="TodoController">
+      <div ng-controller="TodosController">
         <h1 class="title">todos</h1>
 
         <div class="todo-list">
@@ -20,8 +23,6 @@
           <!-- mark all todos complete -->
           <div class="todo-list__new">
             <button class="down-arrow" ng-click="markAllTodos(todo)" ng-class="{darken: getTotalIncompleteTodos() === 0}">&caron;</button>
-            <!-- to darken when all completed
-             <button class="down-arrow-all-completed" ng-click="markAllTodos(todo)">&caron;</button> -->
 
             <!-- ADD -->
             <form ng-submit="addTodo()">
@@ -32,7 +33,7 @@
           <ul>
 
             <!-- EDIT & MARK COMPLETE -->
-            <li class="todo-list__task" ng-repeat="todo in todos" ng-init="isDeleteShown = false" ng-mouseover="isDeleteShown = true" ng-mouseleave="isDeleteShown = false">
+            <li class="todo-list__task" ng-repeat="todo in getTodos()" ng-init="isDeleteShown = false" ng-mouseover="isDeleteShown = true" ng-mouseleave="isDeleteShown = false">
               <svg class="round-checkbox" ng-hide="todo.editing || todo.is_completed" ng-click="markCompleted(todo)"></svg>
               <svg class="selected-checkbox" ng-show="todo.is_completed" ng-hide="todo.editing || !todo.is_completed" ng-click="markIncomplete(todo)"></svg>
               <div class="is_completed-{{todo.is_completed}} todo-list__task-title" ng-dblclick="editTodo(todo)" ng-hide="todo.editing">{{todo.title}}</div>
@@ -51,9 +52,9 @@
             'other': '{{getTotalIncompleteTodos()}} items left'}">
             </span>
             <div class="todo-list__filters">
-              <button class="button" ng-click="showAllTodos(); selectSort('All')" ng-class="{selected: selectedFilter == 'All'}">All</button>
-              <button class="button" ng-click="showActive(); selectSort('Active')" ng-class="{selected: selectedFilter == 'Active'}">Active</button>
-              <button class="button" ng-click="showCompleted(); selectSort('Completed')" ng-class="{selected: selectedFilter == 'Completed'}">Completed</button>
+              <button class="button" ng-click="selectSort('All')" ng-class="{selected: selectedFilter == 'All'}">All</button>
+              <button class="button" ng-click="selectSort('Active')" ng-class="{selected: selectedFilter == 'Active'}">Active</button>
+              <button class="button" ng-click="selectSort('Completed')" ng-class="{selected: selectedFilter == 'Completed'}">Completed</button>
             </div>
 
             <button class="todo-list__clear-completed" ng-click="clearCompleted()" ng-show="getTotalCompleteTodos() > 0">Clear completed</button>
