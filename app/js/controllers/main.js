@@ -76,10 +76,10 @@ $scope.getTodos = function() {
 
 // add border for selected filter
 
-  $scope.selectedFilter = "All";
-  $scope.selectSort = function(filter) {
-    $scope.selectedFilter = filter;
-  };
+$scope.selectedFilter = "All";
+$scope.selectSort = function(filter) {
+  $scope.selectedFilter = filter;
+};
 
 // change completion status
 
@@ -95,42 +95,30 @@ $scope.markIncomplete = function(todo) {
 
 // create array to hold all completed todos
 
-
-// function createCompletedTodosArray() {
-//   var completeTodos = [];
-//   for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
-//     if ($scope.todos[completeIndex].is_completed-false){
-//       completeTodos.push($scope.todos[completeIndex]);
-//     }
-//   }
-// };
+function createCompletedTodosArray() {
+  var completeTodos = [];
+  for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
+    if ($scope.todos[completeIndex].is_completed-false){
+      completeTodos.push($scope.todos[completeIndex]);
+    }
+  }
+  return completeTodos;
+};
 
 // counter for show/hide of the 'clear completed' button
 
 $scope.getTotalCompleteTodos = function() {
-  var completeTodos = [];
-  for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
-    if ($scope.todos[completeIndex].is_completed-false){
-      completeTodos.push($scope.todos[completeIndex]);
-    }
-  }
-  return completeTodos.length;
+  return createCompletedTodosArray().length;
 };
 
 $scope.clearCompleted = function() {
-  var completeTodos = [];
-  for(var completeIndex = 0; completeIndex < $scope.todos.length; completeIndex++) {
-    if ($scope.todos[completeIndex].is_completed-false){
-      completeTodos.push($scope.todos[completeIndex]);
-    }
-  }
-  
+  var completeTodos = createCompletedTodosArray();
   var promises = completeTodos.map(function(todo) {
-    TodoService.deleteTodo(todo);
+    return TodoService.deleteTodo(todo);
   });
 
   $q.all(promises)
-  .then(loadTodos());
+  .then(loadTodos);
 
 };
 
